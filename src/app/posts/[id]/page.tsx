@@ -52,17 +52,19 @@ async function getPost(id: string): Promise<Post> {
   return postData;
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const post = await getPost(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const post = await getPost(id);
   return {
     title: post.title,
     description: post.body.substring(0, 150),
   };
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const post = await getPost(params.id);
-  const idx = Number(params.id) % images.length;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const post = await getPost(id);
+  const idx = Number(id) % images.length;
 
   return (
     <div className="min-h-screen bg-[#090D1F] text-white">
