@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function PostPage({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string } }) {
   const post = await getPost(params.id);
   const idx = Number(params.id) % images.length;
 
