@@ -38,10 +38,6 @@ function getMockDate() {
   return '1 Jan 2023';
 }
 
-type Props = {
-  params: { id: string };
-};
-
 async function getPost(id: string): Promise<Post> {
   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
     next: { revalidate: 3600 },
@@ -56,7 +52,7 @@ async function getPost(id: string): Promise<Post> {
   return postData;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const post = await getPost(params.id);
   return {
     title: post.title,
@@ -64,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function PostPage({ params }: Props) {
+export default async function PostPage({ params }: { params: { id: string } }) {
   const post = await getPost(params.id);
   const idx = Number(params.id) % images.length;
 
